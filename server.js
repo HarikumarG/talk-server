@@ -7,15 +7,20 @@ const app = express();
 
 app.use(favicon(__dirname + '/client/assets/server.png'));
 
+//all connected to the server users
+var users = {};
+
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/client/index.html");
+  data = "<h1>Server Started and running successfully</h1><h2>User Logged in list :-</h2>";
+  for(const usr in users){
+    data += "<h3>"+usr+"</h3>";
+  }
+  res.send(data);
+  //res.sendFile(__dirname + "/client/index.html");
 });
 
 server = new http.createServer(app);
 var wss = new WSServer({ server });
-
-//all connected to the server users
-var users = {};
 
 //when a user connects to our sever
 wss.on("connection", function (connection) {
